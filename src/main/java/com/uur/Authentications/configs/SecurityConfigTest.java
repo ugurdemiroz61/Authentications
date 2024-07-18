@@ -1,6 +1,5 @@
 package com.uur.Authentications.configs;
 
-import com.uur.Authentications.business.UserDetailsServiceImpl;
 import com.uur.Authentications.security.JwtAuthenticationEntryPoint;
 import com.uur.Authentications.security.JwtAuthenticationFilter;
 import io.swagger.v3.oas.models.Components;
@@ -9,14 +8,14 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,22 +23,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
-import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
-
-    private UserDetailsServiceImpl userDetailsService;
-
-    private JwtAuthenticationEntryPoint handler;
-
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService, JwtAuthenticationEntryPoint handler) {
-        this.userDetailsService = userDetailsService;
+@Profile("test")
+public class SecurityConfigTest {
+    private final JwtAuthenticationEntryPoint handler;
+    public SecurityConfigTest(JwtAuthenticationEntryPoint handler) {
         this.handler = handler;
     }
 
@@ -62,16 +55,20 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
+        //config.applyPermitDefaultValues();
+
         config.setAllowCredentials(true);
         config.addAllowedOrigin("*");//tüm istemcilere güven
         config.addAllowedHeader("*");
-        config.addAllowedMethod("OPTIONS");
-        config.addAllowedMethod("HEAD");
-        config.addAllowedMethod("GET");
-        config.addAllowedMethod("PUT");
-        config.addAllowedMethod("POST");
-        config.addAllowedMethod("DELETE");
-        config.addAllowedMethod("PATCH");
+
+        config.addAllowedMethod(HttpMethod.OPTIONS);
+        config.addAllowedMethod(HttpMethod.HEAD);
+        config.addAllowedMethod(HttpMethod.GET);
+        config.addAllowedMethod(HttpMethod.PUT);
+        config.addAllowedMethod(HttpMethod.POST);
+        config.addAllowedMethod(HttpMethod.DELETE);
+        config.addAllowedMethod(HttpMethod.PATCH);
+
         source.registerCorsConfiguration("/**", config);
         return source;
     }
@@ -109,9 +106,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .cors((cors) -> cors
-                        .configurationSource(corsConfigurationSource())
-                )
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(handler))
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
@@ -119,19 +114,15 @@ public class SecurityConfig {
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
                                 .requestMatchers(antMatcher("/auth/CreateToken")).permitAll()
-                                //.requestMatchers(antMatcher(HttpMethod.POST, "/users/**")).permitAll()
+                                .requestMatchers(antMatcher(HttpMethod.POST, "/users/**")).permitAll()
                                 .requestMatchers(antMatcher(HttpMethod.GET, "/users")).hasRole("ADMIN")
                                 .requestMatchers("/users/ResetPassword").hasRole("ADMIN")
                                 .requestMatchers("/userRoles/**").hasRole("ADMIN")
                                 .requestMatchers("/roles/**").hasRole("ADMIN")
                                 .requestMatchers("/userAuthorities/**").hasRole("ADMIN")
                                 .requestMatchers("/authorities/**").hasRole("ADMIN")
-
                                 /*  .requestMatchers("/api/v1/management/**").hasAnyRole(ADMIN.name(), MANAGER.name())
-                                .requestMatchers(GET, "/api/v1/management/**").hasAnyAuthority(ADMIN_READ.name(), MANAGER_READ.name())
-                                  .requestMatchers(POST, "/api/v1/management/**").hasAnyAuthority(ADMIN_CREATE.name(), MANAGER_CREATE.name())
-                                  .requestMatchers(PUT, "/api/v1/management/**").hasAnyAuthority(ADMIN_UPDATE.name(), MANAGER_UPDATE.name())
-                                  .requestMatchers(DELETE, "/api/v1/management/**").hasAnyAuthority(ADMIN_DELETE.name(), MANAGER_DELETE.name())*/
+                                .requestMatchers(GET, "/api/v1/management/**").hasAnyAuthority(ADMIN_READ.name(), MANAGER_READ.name()) */
                                 .anyRequest()
                                 .authenticated()
                 )

@@ -1,6 +1,5 @@
 package com.uur.Authentications.security;
 
-import com.uur.Authentications.entities.Role;
 import com.uur.Authentications.entities.User;
 import com.uur.Authentications.entities.UserAuthority;
 import com.uur.Authentications.entities.UserRole;

@@ -1,5 +1,4 @@
 package com.uur.Authentications.dtos;
-import com.uur.Authentications.entities.Authority;
 import lombok.*;
 
 import java.util.List;

@@ -1,7 +1,6 @@
 package com.uur.Authentications.business;
 
 import com.uur.Authentications.dtos.*;
-import com.uur.Authentications.entities.User;
 
 import java.util.List;
 

@@ -2,16 +2,12 @@ package com.uur.Authentications.security;
 
 import com.uur.Authentications.entities.User;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.InvalidKeyException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
-import io.jsonwebtoken.security.WeakKeyException;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,6 +27,7 @@ public class JwtTokenProvider {
         Date expireDate = new Date(new Date().getTime() + jwtExpiration);
         return buildToken(new HashMap<>(), user, expireDate);
     }
+
     public String generateJwtRefreshToken(User user) {
         Date expireDate = new Date(new Date().getTime() + refreshExpiration);
         return buildToken(new HashMap<>(), user, expireDate);
@@ -49,21 +46,23 @@ public class JwtTokenProvider {
                 .expiration(expireDate)
                 .signWith(getSecretKey())
                 .compact();
-    }
-
+    }//BEAN YAPILACAK
     private SecretKey getSecretKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
-
+    //BEAN YAPILACAK
+    private JwtParser getJwtParser() {
+        return Jwts.parser().verifyWith(getSecretKey()).build();
+    }
 
     int getUserIdFromJwt(String token) {
-        Claims claims = Jwts.parser().verifyWith(getSecretKey()).build().parseSignedClaims(token).getPayload();
+        Claims claims = getJwtParser().parseSignedClaims(token).getPayload();
         return Integer.parseInt(claims.getSubject());
     }
 
     boolean validateToken(String token) {
         try {
-            Jwts.parser().verifyWith(getSecretKey()).build().parseSignedClaims(token);
+            getJwtParser().parseSignedClaims(token);
             return !isTokenExpired(token);
         } catch (SignatureException e) {
             return false;
@@ -78,8 +77,10 @@ public class JwtTokenProvider {
         }
     }
 
+
+
     private boolean isTokenExpired(String token) {
-        Date expiration = Jwts.parser().verifyWith(getSecretKey()).build().parseSignedClaims(token).getPayload().getExpiration();
+        Date expiration = getJwtParser().parseSignedClaims(token).getPayload().getExpiration();
         return expiration.before(new Date());
     }
 }

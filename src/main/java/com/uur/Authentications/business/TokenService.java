@@ -5,13 +5,9 @@ import com.uur.Authentications.dtos.RefreshTokenDto;
 import com.uur.Authentications.entities.RefreshToken;
 import com.uur.Authentications.entities.User;
 import com.uur.Authentications.exeptions.NotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
 import java.util.Date;
-import java.util.UUID;
 
 @Service
 public class TokenService {

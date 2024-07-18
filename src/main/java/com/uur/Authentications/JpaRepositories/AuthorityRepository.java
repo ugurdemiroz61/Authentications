@@ -1,8 +1,6 @@
 package com.uur.Authentications.JpaRepositories;
 
 import com.uur.Authentications.entities.Authority;
-import com.uur.Authentications.entities.RefreshToken;
-import com.uur.Authentications.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;

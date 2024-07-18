@@ -7,9 +7,7 @@ import com.uur.Authentications.JpaRepositories.UserRepository;
 import com.uur.Authentications.JpaRepositories.UserRoleRepository;
 import com.uur.Authentications.dtos.*;
 import com.uur.Authentications.entities.User;
-import com.uur.Authentications.entities.UserAuthority;
 import com.uur.Authentications.exeptions.BadRequestException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
@@ -19,11 +17,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.startsWith;
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.exact;

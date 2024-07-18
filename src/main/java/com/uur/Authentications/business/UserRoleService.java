@@ -11,7 +11,6 @@ import com.uur.Authentications.entities.UserRole;
 import com.uur.Authentications.exeptions.BadRequestException;
 import com.uur.Authentications.exeptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

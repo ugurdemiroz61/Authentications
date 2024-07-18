@@ -1,7 +1,5 @@
 package com.uur.Authentications.dtos;
 
-
-
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
