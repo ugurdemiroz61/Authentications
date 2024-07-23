@@ -30,7 +30,7 @@ public class AuthorityRestController {
 
     @DeleteMapping("{authorityId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void RemoveAuthority(@PathVariable int authorityId){
+    public void RemoveAuthority(@PathVariable long authorityId){
         _IAuthorityService.RemoveAuthority(authorityId);
     }
 }

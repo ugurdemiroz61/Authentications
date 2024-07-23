@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateUserAuthorityDto {
     @NotNull(message = "Authority id boş bırakılamaz!" )
-    private int authorityId;
+    private long authorityId;
     @NotNull(message = "User id boş bırakılamaz!" )
-    private int userId;
+    private long userId;
 }

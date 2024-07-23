@@ -11,7 +11,7 @@ import java.util.List;
 
 @RepositoryRestResource(  exported = false)
 @Repository
-public interface UserAuthorityRepository  extends JpaRepository<UserAuthority, Integer> {
+public interface UserAuthorityRepository  extends JpaRepository<UserAuthority, Long> {
     List<UserAuthority> findByUser(User user);
 
     boolean existsByUserAndAuthority(User addingUser, Authority addingAuthority);

@@ -45,7 +45,7 @@ public class AuthorityService implements IAuthorityService {
     }
 
     @Override
-    public void RemoveAuthority(int authorityId) {
+    public void RemoveAuthority(long authorityId) {
         if (!_userAuthorityRepository.existsById(authorityId)) {
             if (_authorityRepository.existsById(authorityId)) {
                 _authorityRepository.deleteById(authorityId);

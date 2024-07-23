@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return user.map(loadUser -> JwtUserDetails.create(loadUser, _userRoleRepository.findByUser(loadUser), _userAuthorityRepository.findByUser(loadUser))).orElseThrow(() -> new NotFoundException("User not found!"));
     }
 
-    public UserDetails loadUserById(int id) {
+    public UserDetails loadUserById(long id) {
         User user = _userRepository.findById(id).orElseThrow(() -> new NotFoundException("User not found!"));
         List<UserRole> userRoles = _userRoleRepository.findByUser(user);
         List<UserAuthority> userAuthorities = _userAuthorityRepository.findByUser(user);

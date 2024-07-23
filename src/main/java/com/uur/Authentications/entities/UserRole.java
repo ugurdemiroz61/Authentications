@@ -8,18 +8,12 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserRole {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-
-    @OneToOne(fetch = FetchType.EAGER)
+public class UserRole  extends BaseEntity {
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private Role role;
 
-
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private User user;
 }

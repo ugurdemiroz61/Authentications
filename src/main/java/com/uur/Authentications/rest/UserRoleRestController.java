@@ -17,7 +17,7 @@ public class UserRoleRestController {
     private final IUserRoleService _userRoleService;
 
     @GetMapping("{userId}")
-    public List<UserRoleDto> GetUserRoles(@PathVariable int userId) {
+    public List<UserRoleDto> GetUserRoles(@PathVariable long userId) {
         return _userRoleService.GetUserRoles(userId);
     }
 
@@ -29,7 +29,7 @@ public class UserRoleRestController {
 
     @DeleteMapping("{userRoleId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void RemoveUserRole(@PathVariable int userRoleId) {
+    public void RemoveUserRole(@PathVariable long userRoleId) {
         _userRoleService.RemoveUserRole(userRoleId);
     }
 }

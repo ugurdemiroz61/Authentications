@@ -36,7 +36,7 @@ public class RoleService implements IRoleService {
     }
 
     @Override
-    public void RemoveRole(int roleId) {
+    public void RemoveRole(long roleId) {
         if (!_userRoleRepository.existsById(roleId)) {
             if (_roleRepository.existsById(roleId)) {
                 _roleRepository.deleteById(roleId);

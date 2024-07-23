@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 @RepositoryRestResource(  exported = false)
 @Repository
-public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Integer> {
+public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
 
 
-    Optional<RefreshToken> findByUserIdAndToken(int userId, String token);
+    Optional<RefreshToken> findByUserIdAndToken(long userId, String token);
 
-    Optional<RefreshToken> findByUser_Id(int userId);
+    Optional<RefreshToken> findByUser_Id(long userId);
 }

@@ -18,7 +18,7 @@ import java.util.Locale;
 @Setter
 public class JwtUserDetails implements UserDetails {
 
-    public int id;
+    public Long id;
     private String username;
     private String password;
     private boolean accountNonExpired;
@@ -27,7 +27,7 @@ public class JwtUserDetails implements UserDetails {
     private boolean enabled;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public JwtUserDetails(int id, String username, String password, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled, Collection<? extends GrantedAuthority> authorities) {
+    public JwtUserDetails(long id, String username, String password, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;

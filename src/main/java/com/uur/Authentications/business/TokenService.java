@@ -36,7 +36,7 @@ public class TokenService {
         return token.getExpiryDate().before(new Date());
     }
 
-    public RefreshToken getByUser(int userId) {
+    public RefreshToken getByUser(long userId) {
         return _refreshTokenRepository.findByUser_Id(userId).orElseThrow(() -> new NotFoundException("Kullanıcı bulunamadı!"));
     }
 

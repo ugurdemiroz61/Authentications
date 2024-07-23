@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class UserAuthorityDto {
-    private int id;
-    private int authorityId;
+    private long id;
+    private long authorityId;
     private String authorityName;
-    private int userId;
+    private long userId;
 }

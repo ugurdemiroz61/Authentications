@@ -30,7 +30,7 @@ public class RoleRestController {
 
     @DeleteMapping("{roleId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void RemoveRole(@PathVariable int roleId){
+    public void RemoveRole(@PathVariable long roleId){
         _roleService.RemoveRole(roleId);
     }
 }

@@ -17,7 +17,7 @@ public class UserAuthorityRestController {
     private final IUserAuthorityService _userAuthorityService;
 
     @GetMapping("{userId}")
-    public List<UserAuthorityDto> GetUserAuthorities(@PathVariable int userId) {
+    public List<UserAuthorityDto> GetUserAuthorities(@PathVariable long userId) {
         return _userAuthorityService.getUserAuthorities(userId);
     }
 
@@ -29,7 +29,7 @@ public class UserAuthorityRestController {
 
     @DeleteMapping("{userAuthorityId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void RemoveUserAuthority(@PathVariable int userAuthorityId) {
+    public void RemoveUserAuthority(@PathVariable long userAuthorityId) {
         _userAuthorityService.RemoveUserAuthority(userAuthorityId);
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 @RepositoryRestResource(  exported = false)
 @Repository
-public interface RoleRepository  extends JpaRepository<Role, Integer> {
+public interface RoleRepository  extends JpaRepository<Role, Long> {
     Optional<Role> findByName(String name);
-    Boolean existsById(int id);
+    Boolean existsById(long id);
 }

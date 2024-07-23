@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateUserDto {
     @NotNull(message = "User id boş bırakılamaz!" )
-    private int id;
+    private long id;
     @NotBlank(message = "Adı boş bırakılamaz!")
     private String name;
     @NotBlank(message = "Soyadı boş bırakılamaz!")

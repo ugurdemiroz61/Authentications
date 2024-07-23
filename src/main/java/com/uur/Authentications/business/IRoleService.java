@@ -7,7 +7,7 @@ import java.util.List;
 public interface IRoleService {
     RoleDto AddRole(CreateRoleDto roleDto);
 
-    void RemoveRole(int roleId);
+    void RemoveRole(long roleId);
 
     List<RoleDto> findAll();
 }

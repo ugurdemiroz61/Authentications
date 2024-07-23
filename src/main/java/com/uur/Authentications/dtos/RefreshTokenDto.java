@@ -10,5 +10,5 @@ public class RefreshTokenDto {
     @NotBlank(message = "Token boş bırakılamaz!" )
     private String token;
     @NotBlank(message = "User id boş bırakılamaz!" )
-    private int userId;
+    private long userId;
 }

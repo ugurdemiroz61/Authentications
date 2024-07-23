@@ -5,18 +5,16 @@ import lombok.*;
 
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table( schema = "Authentication")
+@Table(schema = "Authentication")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class User extends BaseEntity {
+
     @Column(nullable = false, length = 50)
     private String name;
     @Column(nullable = false, length = 50)
@@ -41,6 +39,7 @@ public class User {
     private Date lockoutEnd;
     @Column(nullable = false)
     private boolean lockoutEnabled = false;
+
     @Column(nullable = false)
     private Date createdDate;
     @Column(nullable = true)
@@ -51,9 +50,13 @@ public class User {
     @Column(nullable = true)
     private int updatedUser;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<UserRole> userRoleList;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<UserRole> userRoles;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<UserAuthority> userAuthorityList;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<UserAuthority> userAuthorities;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
+    private Set<RefreshToken> refreshTokens;
+
 }

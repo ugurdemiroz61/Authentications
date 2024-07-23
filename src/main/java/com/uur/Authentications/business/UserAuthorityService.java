@@ -20,7 +20,7 @@ public class UserAuthorityService implements IUserAuthorityService {
     private final UserRepository _userRepository;
 
     @Override
-    public List<UserAuthorityDto> getUserAuthorities(int userId) {
+    public List<UserAuthorityDto> getUserAuthorities(long userId) {
         User user = _userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Kullanıcı bulunamadı!"));
         return _userAuthorityRepository.findByUser(user).stream()
                 .map(userAuthority ->
@@ -45,7 +45,7 @@ public class UserAuthorityService implements IUserAuthorityService {
     }
 
     @Override
-    public void RemoveUserAuthority(int userAuthorityId) {
+    public void RemoveUserAuthority(long userAuthorityId) {
         Optional<UserAuthority> userAuthority = _userAuthorityRepository.findById(userAuthorityId);
         userAuthority.ifPresent(
                 _userAuthorityRepository::delete);

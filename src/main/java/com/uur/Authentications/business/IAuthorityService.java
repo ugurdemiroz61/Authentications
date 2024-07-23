@@ -10,5 +10,5 @@ public interface IAuthorityService {
 
     AuthorityDto AddAuthority(CreateAuthorityDto authorityDto);
 
-    void RemoveAuthority(int authorityId);
+    void RemoveAuthority(long authorityId);
 }

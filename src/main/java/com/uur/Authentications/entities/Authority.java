@@ -7,15 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table( schema = "Authentication")
+@Table(schema = "Authentication")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Authority {
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+public class Authority extends BaseEntity {
     @Column(nullable = false)
     private String name;
+
 }

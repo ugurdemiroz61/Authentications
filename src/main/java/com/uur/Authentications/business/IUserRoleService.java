@@ -9,7 +9,7 @@ public interface IUserRoleService {
 
     UserRoleDto AddUserRole(CreateUserRoleDto createUserRoleDto);
 
-    void RemoveUserRole(int userRoleId);
+    void RemoveUserRole(long userRoleId);
 
-    List<UserRoleDto> GetUserRoles(int  userId);
+    List<UserRoleDto> GetUserRoles(long  userId);
 }

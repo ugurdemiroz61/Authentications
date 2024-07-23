@@ -6,9 +6,9 @@ import com.uur.Authentications.dtos.UserAuthorityDto;
 import java.util.List;
 
 public interface IUserAuthorityService {
-    List<UserAuthorityDto> getUserAuthorities(int userId);
+    List<UserAuthorityDto> getUserAuthorities(long userId);
 
     UserAuthorityDto AddUserAuthority(CreateUserAuthorityDto createUserAuthorityDto);
 
-    void RemoveUserAuthority(int userAuthorityId);
+    void RemoveUserAuthority(long userAuthorityId);
 }

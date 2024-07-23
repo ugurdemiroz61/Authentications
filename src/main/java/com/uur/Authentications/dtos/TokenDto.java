@@ -9,5 +9,5 @@ import lombok.Getter;
 public class TokenDto {
     private String AccessToken;
     private String RefreshToken;
-    private int UserId;
+    private long UserId;
 }

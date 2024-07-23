@@ -40,14 +40,14 @@ public class UserRoleService implements IUserRoleService {
     }
 
     @Override
-    public void RemoveUserRole(int userRoleId) {
+    public void RemoveUserRole(long userRoleId) {
         Optional<UserRole> userRole = _userRoleRepository.findById(userRoleId);
         userRole.ifPresent(
                 _userRoleRepository::delete);
     }
 
     @Override
-    public List<UserRoleDto> GetUserRoles(int userId) {
+    public List<UserRoleDto> GetUserRoles(long userId) {
         User user = _userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Kullanıcı bulunamadı!"));
         return _userRoleRepository.findByUser(user).stream()
                 .map(userRole ->

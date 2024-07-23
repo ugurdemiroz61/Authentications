@@ -11,7 +11,7 @@ import java.util.List;
 
 @RepositoryRestResource(exported = false)
 @Repository
-public interface UserRoleRepository extends JpaRepository<UserRole, Integer> {
+public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
     Boolean existsById(int id);
 
     List<UserRole> findByUser(User user);
