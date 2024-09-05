@@ -8,6 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserRole  extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn

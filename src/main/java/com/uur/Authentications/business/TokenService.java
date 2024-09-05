@@ -4,7 +4,7 @@ import com.uur.Authentications.JpaRepositories.RefreshTokenRepository;
 import com.uur.Authentications.dtos.RefreshTokenDto;
 import com.uur.Authentications.entities.RefreshToken;
 import com.uur.Authentications.entities.User;
-import com.uur.Authentications.exeptions.NotFoundException;
+import com.uur.Authentications.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.Date;
@@ -14,12 +14,12 @@ public class TokenService {
 
     private final RefreshTokenRepository _refreshTokenRepository;
 
+    @Value("${application.security.jwt.refresh-token.expiration}")
+    private long refreshExpiration;
+
     public TokenService(RefreshTokenRepository _refreshTokenRepository) {
         this._refreshTokenRepository = _refreshTokenRepository;
     }
-
-    @Value("${application.security.jwt.refresh-token.expiration}")
-    private long refreshExpiration;
 
     public void createRefreshToken(User user, String refreshToken) {
         RefreshToken token = _refreshTokenRepository.findByUser_Id(user.getId()).

@@ -15,5 +15,4 @@ import lombok.Setter;
 public class Authority extends BaseEntity {
     @Column(nullable = false)
     private String name;
-
 }

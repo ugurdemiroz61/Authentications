@@ -4,7 +4,6 @@ import com.uur.Authentications.business.IUserRoleService;
 import com.uur.Authentications.dtos.CreateUserRoleDto;
 import com.uur.Authentications.dtos.UserRoleDto;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,9 +11,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("userRoles")
-@RequiredArgsConstructor
 public class UserRoleRestController {
     private final IUserRoleService _userRoleService;
+
+    public UserRoleRestController(IUserRoleService userRoleService) {
+        _userRoleService = userRoleService;
+    }
 
     @GetMapping("{userId}")
     public List<UserRoleDto> GetUserRoles(@PathVariable long userId) {

@@ -5,21 +5,25 @@ import com.uur.Authentications.JpaRepositories.UserAuthorityRepository;
 import com.uur.Authentications.dtos.AuthorityDto;
 import com.uur.Authentications.dtos.CreateAuthorityDto;
 import com.uur.Authentications.entities.Authority;
-import com.uur.Authentications.exeptions.BadRequestException;
-import com.uur.Authentications.exeptions.NotFoundException;
-import lombok.RequiredArgsConstructor;
+import com.uur.Authentications.exceptions.BadRequestException;
+import com.uur.Authentications.exceptions.NotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Service
 public class AuthorityService implements IAuthorityService {
     private final AuthorityRepository _authorityRepository;
     private final UserAuthorityRepository _userAuthorityRepository;
     private final ModelMapper _modelMapper;
+
+    public AuthorityService(AuthorityRepository authorityRepository, UserAuthorityRepository userAuthorityRepository, ModelMapper modelMapper) {
+        _authorityRepository = authorityRepository;
+        _userAuthorityRepository = userAuthorityRepository;
+        _modelMapper = modelMapper;
+    }
 
     @Override
     public List<AuthorityDto> findAll() {

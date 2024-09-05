@@ -8,20 +8,24 @@ import com.uur.Authentications.dtos.UserRoleDto;
 import com.uur.Authentications.entities.Role;
 import com.uur.Authentications.entities.User;
 import com.uur.Authentications.entities.UserRole;
-import com.uur.Authentications.exeptions.BadRequestException;
-import com.uur.Authentications.exeptions.NotFoundException;
-import lombok.RequiredArgsConstructor;
+import com.uur.Authentications.exceptions.BadRequestException;
+import com.uur.Authentications.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class UserRoleService implements IUserRoleService {
     private final UserRoleRepository _userRoleRepository;
     private final RoleRepository _roleRepository;
     private final UserRepository _userRepository;
+
+    public UserRoleService(UserRoleRepository userRoleRepository, RoleRepository roleRepository, UserRepository userRepository) {
+        _userRoleRepository = userRoleRepository;
+        _roleRepository = roleRepository;
+        _userRepository = userRepository;
+    }
 
 
     @Override

@@ -6,9 +6,8 @@ import com.uur.Authentications.JpaRepositories.UserRoleRepository;
 import com.uur.Authentications.entities.User;
 import com.uur.Authentications.entities.UserAuthority;
 import com.uur.Authentications.entities.UserRole;
-import com.uur.Authentications.exeptions.NotFoundException;
+import com.uur.Authentications.exceptions.NotFoundException;
 import com.uur.Authentications.security.JwtUserDetails;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -17,12 +16,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-
     private final UserRepository _userRepository;
     private final UserRoleRepository _userRoleRepository;
     private final UserAuthorityRepository _userAuthorityRepository;
+
+    public UserDetailsServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, UserAuthorityRepository userAuthorityRepository) {
+        _userRepository = userRepository;
+        _userRoleRepository = userRoleRepository;
+        _userAuthorityRepository = userAuthorityRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws NotFoundException {

@@ -4,20 +4,24 @@ import com.uur.Authentications.JpaRepositories.*;
 import com.uur.Authentications.dtos.CreateUserAuthorityDto;
 import com.uur.Authentications.dtos.UserAuthorityDto;
 import com.uur.Authentications.entities.*;
-import com.uur.Authentications.exeptions.BadRequestException;
-import com.uur.Authentications.exeptions.NotFoundException;
-import lombok.RequiredArgsConstructor;
+import com.uur.Authentications.exceptions.BadRequestException;
+import com.uur.Authentications.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Service
 public class UserAuthorityService implements IUserAuthorityService {
     private final UserAuthorityRepository _userAuthorityRepository;
     private final AuthorityRepository _authorityRepository;
     private final UserRepository _userRepository;
+
+    public UserAuthorityService(UserAuthorityRepository userAuthorityRepository, AuthorityRepository authorityRepository, UserRepository userRepository) {
+        _userAuthorityRepository = userAuthorityRepository;
+        _authorityRepository = authorityRepository;
+        _userRepository = userRepository;
+    }
 
     @Override
     public List<UserAuthorityDto> getUserAuthorities(long userId) {

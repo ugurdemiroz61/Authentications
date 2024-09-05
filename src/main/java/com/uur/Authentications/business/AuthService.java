@@ -6,10 +6,9 @@ import com.uur.Authentications.dtos.RefreshTokenDto;
 import com.uur.Authentications.dtos.TokenDto;
 import com.uur.Authentications.entities.RefreshToken;
 import com.uur.Authentications.entities.User;
-import com.uur.Authentications.exeptions.NotFoundException;
-import com.uur.Authentications.exeptions.UnAuthorizeException;
+import com.uur.Authentications.exceptions.NotFoundException;
+import com.uur.Authentications.exceptions.UnAuthorizeException;
 import com.uur.Authentications.security.JwtTokenProvider;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class AuthService implements IAuthService {
     private final AuthenticationManager _authenticationManager;
 
@@ -26,6 +24,13 @@ public class AuthService implements IAuthService {
     private final TokenService _refreshTokenService;
 
     private final UserRepository _userRepository;
+
+    public AuthService(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, TokenService refreshTokenService, UserRepository userRepository) {
+        _authenticationManager = authenticationManager;
+        _jwtTokenProvider = jwtTokenProvider;
+        _refreshTokenService = refreshTokenService;
+        _userRepository = userRepository;
+    }
 
     @Override
     public TokenDto CreateToken(LoginDto loginDto) {

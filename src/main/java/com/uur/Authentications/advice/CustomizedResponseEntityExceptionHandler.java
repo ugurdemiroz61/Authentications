@@ -1,10 +1,10 @@
 package com.uur.Authentications.advice;
 
 import com.uur.Authentications.dtos.ErrorDto;
-import com.uur.Authentications.exeptions.BadRequestException;
-import com.uur.Authentications.exeptions.ForbiddenException;
-import com.uur.Authentications.exeptions.NotFoundException;
-import com.uur.Authentications.exeptions.UnAuthorizeException;
+import com.uur.Authentications.exceptions.BadRequestException;
+import com.uur.Authentications.exceptions.ForbiddenException;
+import com.uur.Authentications.exceptions.NotFoundException;
+import com.uur.Authentications.exceptions.UnAuthorizeException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

@@ -1,14 +1,12 @@
 package com.uur.Authentications.business;
 
 
-import com.uur.Authentications.JpaRepositories.AuthorityRepository;
 import com.uur.Authentications.JpaRepositories.UserAuthorityRepository;
 import com.uur.Authentications.JpaRepositories.UserRepository;
 import com.uur.Authentications.JpaRepositories.UserRoleRepository;
 import com.uur.Authentications.dtos.*;
 import com.uur.Authentications.entities.User;
-import com.uur.Authentications.exeptions.BadRequestException;
-import lombok.RequiredArgsConstructor;
+import com.uur.Authentications.exceptions.BadRequestException;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,7 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +22,6 @@ import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatc
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.exact;
 
 @Service
-@RequiredArgsConstructor
 public class UserService implements IUserService {
     private final PasswordEncoder _passwordEncoder;
     private final UserRepository _userRepository;
@@ -33,6 +29,15 @@ public class UserService implements IUserService {
     private final UserRoleRepository _userRoleRepository;
     private final UserAuthorityRepository _userAuthorityRepository;
     private final AuthenticationManager _authenticationManager;
+
+    public UserService(PasswordEncoder _passwordEncoder, UserRepository _userRepository, ModelMapper _modelMapper, UserRoleRepository _userRoleRepository, UserAuthorityRepository _userAuthorityRepository, AuthenticationManager _authenticationManager) {
+        this._passwordEncoder = _passwordEncoder;
+        this._userRepository = _userRepository;
+        this._modelMapper = _modelMapper;
+        this._userRoleRepository = _userRoleRepository;
+        this._userAuthorityRepository = _userAuthorityRepository;
+        this._authenticationManager = _authenticationManager;
+    }
 
     @Override
     public UserDto CreateUser(CreateUserDto createUserDto) {
@@ -43,7 +48,6 @@ public class UserService implements IUserService {
         } else {
             User user = _modelMapper.map(createUserDto, User.class);
             user.setPasswordHash(_passwordEncoder.encode(createUserDto.getPassword()));
-            user.setCreatedDate(new Date());
             user = _userRepository.save(user);
             return _modelMapper.map(user, UserDto.class);
         }

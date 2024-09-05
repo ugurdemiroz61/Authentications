@@ -40,15 +40,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private boolean lockoutEnabled = false;
 
-    @Column(nullable = false)
-    private Date createdDate;
-    @Column(nullable = true)
-    private int createUser;
 
-    @Column(nullable = true)
-    private Date updatedDate;
-    @Column(nullable = true)
-    private int updatedUser;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<UserRole> userRoles;

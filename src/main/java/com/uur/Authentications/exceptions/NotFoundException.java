@@ -1,4 +1,4 @@
-package com.uur.Authentications.exeptions;
+package com.uur.Authentications.exceptions;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

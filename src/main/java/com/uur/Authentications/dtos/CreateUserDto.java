@@ -3,9 +3,14 @@ package com.uur.Authentications.dtos;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
+
 public class CreateUserDto {
     @NotBlank(message = "Adı boş bırakılamaz!")
     private String name;

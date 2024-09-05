@@ -3,7 +3,6 @@ package com.uur.Authentications.rest;
 import com.uur.Authentications.business.IUserService;
 import com.uur.Authentications.dtos.*;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,11 +10,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("users")
-@RequiredArgsConstructor
 public class UserRestController {
     private final IUserService _userService;
 
-
+    public UserRestController(IUserService userService) {
+        _userService = userService;
+    }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)

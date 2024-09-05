@@ -38,7 +38,6 @@ public class JwtUserDetails implements UserDetails {
         this.authorities = authorities;
     }
 
-
     public static JwtUserDetails create(User user, List<UserRole> roles, List<UserAuthority> authorities) {
         List<SimpleGrantedAuthority> authoritiesList = new ArrayList<>(roles.stream().map(userRole ->
                 new SimpleGrantedAuthority("ROLE_" + userRole.getRole().getName().toUpperCase(Locale.ENGLISH))

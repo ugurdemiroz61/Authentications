@@ -5,21 +5,25 @@ import com.uur.Authentications.JpaRepositories.UserRoleRepository;
 import com.uur.Authentications.dtos.CreateRoleDto;
 import com.uur.Authentications.dtos.RoleDto;
 import com.uur.Authentications.entities.Role;
-import com.uur.Authentications.exeptions.BadRequestException;
-import com.uur.Authentications.exeptions.NotFoundException;
-import lombok.RequiredArgsConstructor;
+import com.uur.Authentications.exceptions.BadRequestException;
+import com.uur.Authentications.exceptions.NotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Service
 public class RoleService implements IRoleService {
     private final RoleRepository _roleRepository;
     private final UserRoleRepository _userRoleRepository;
     private final ModelMapper _modelMapper;
+
+    public RoleService(RoleRepository roleRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper) {
+        _roleRepository = roleRepository;
+        _userRoleRepository = userRoleRepository;
+        _modelMapper = modelMapper;
+    }
 
     @Override
     public RoleDto AddRole(CreateRoleDto createRoleDto) {

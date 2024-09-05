@@ -16,6 +16,7 @@ import java.util.Map;
 @Component
 public class JwtTokenProvider {
 
+
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
     @Value("${application.security.jwt.expiration}")
@@ -46,21 +47,24 @@ public class JwtTokenProvider {
                 .expiration(expireDate)
                 .signWith(getSecretKey())
                 .compact();
-    }//BEAN YAPILACAK
+    }
+
+    //BEAN YAPILACAK
     private SecretKey getSecretKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
+
     //BEAN YAPILACAK
     private JwtParser getJwtParser() {
         return Jwts.parser().verifyWith(getSecretKey()).build();
     }
 
-    int getUserIdFromJwt(String token) {
+    public long getUserIdFromJwt(String token) {
         Claims claims = getJwtParser().parseSignedClaims(token).getPayload();
-        return Integer.parseInt(claims.getSubject());
+        return Long.parseLong(claims.getSubject());
     }
 
-    boolean validateToken(String token) {
+    public boolean validateToken(String token) {
         try {
             getJwtParser().parseSignedClaims(token);
             return !isTokenExpired(token);
@@ -76,7 +80,6 @@ public class JwtTokenProvider {
             return false;
         }
     }
-
 
 
     private boolean isTokenExpired(String token) {
