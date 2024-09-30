@@ -48,7 +48,13 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
 
     @ExceptionHandler(BadRequestException.class)
-    public final ResponseEntity<ErrorDto> handleNotAcceptableException(Exception ex, WebRequest request) throws Exception {
+    public final ResponseEntity<ErrorDto> handleBadRequestException(Exception ex, WebRequest request) throws Exception {
+        ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),
+                ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<ErrorDto>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public final ResponseEntity<ErrorDto> handleIllegalArgumentException(Exception ex, WebRequest request) throws Exception {
         ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),
                 ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<ErrorDto>(errorDetails, HttpStatus.BAD_REQUEST);

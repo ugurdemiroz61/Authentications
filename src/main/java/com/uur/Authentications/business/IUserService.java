@@ -1,6 +1,9 @@
 package com.uur.Authentications.business;
 
 import com.uur.Authentications.dtos.*;
+import com.uur.Authentications.entities.User;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
@@ -15,5 +18,5 @@ public interface IUserService {
 
     void ResetPassword(ResetPasswordDto resetPasswordDto);
 
-    List<UserDto> getUsers(PagingFilterDto<UserDto> pagingFilterDto);
+    Slice<User> getUsers(Pageable pageable,UserFilterDto userFilterDto);
 }

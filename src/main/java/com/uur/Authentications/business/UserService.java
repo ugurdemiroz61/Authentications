@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -79,8 +80,8 @@ public class UserService implements IUserService {
         return resultUser;
     }
 
-    public List<UserDto> getUsers(PagingFilterDto<UserDto> pagingFilterDto) {
-        User example = _modelMapper.map(pagingFilterDto.getFilterData(), User.class);
+    public Slice<User> getUsers(Pageable pageable,UserFilterDto userFilterDto) {
+        User example = _modelMapper.map(userFilterDto, User.class);
         ExampleMatcher matcher = ExampleMatcher
                 .matchingAll()
                 .withIgnorePaths("id", " lockoutEnabled", "accessFailedCount", "createUser", "updatedUser")
@@ -89,9 +90,10 @@ public class UserService implements IUserService {
                 .withMatcher("email", startsWith().ignoreCase())
                 .withMatcher("lockoutEnabled", exact())
                 .withMatcher("phoneNumber", startsWith().ignoreCase());
-        Pageable page = PageRequest.of(pagingFilterDto.getPageNumber(), pagingFilterDto.getSize(), Sort.by("name").ascending().and(Sort.by("surname")));
-        Page<User> res = _userRepository.findAll(Example.of(example, matcher), page);
-        return res.stream().map(s -> _modelMapper.map(s, UserDto.class)).toList();
+
+        Slice<User> res = _userRepository.findAll(Example.of(example, matcher), pageable);
+        return res;
+        // return users.stream().map(s -> _modelMapper.map(s, UserDto.class)).
     }
 
     @Override

@@ -2,7 +2,10 @@ package com.uur.Authentications.rest;
 
 import com.uur.Authentications.business.IUserService;
 import com.uur.Authentications.dtos.*;
+import com.uur.Authentications.entities.User;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +50,7 @@ public class UserRestController {
     }
 
     @GetMapping()
-    public List<UserDto> getUsers(@RequestBody PagingFilterDto<UserDto> pagingFilterDto) {
-        return _userService.getUsers(pagingFilterDto);
+    public Slice<User> getUsers(Pageable pageable,@RequestBody UserFilterDto userFilterDto) {
+        return _userService.getUsers(pageable,userFilterDto);
     }
 }
