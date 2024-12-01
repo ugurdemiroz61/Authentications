@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.uur</groupId>
-    <artifactId>Authentications</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>Authentications</name>
+    <artifactId>authentications</artifactId>
+    <version>10.0.1</version>
+    <name>authentications</name>
     <description>Demo project for Spring Boot Authentications</description>
     <url/>
     <licenses>
@@ -127,6 +127,42 @@
                         </exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.45.1</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <verbose>true</verbose>
+                    <images>
+                        <image>
+                            <name>uur/${project.artifactId}:${project.version}</name>
+                            <build>
+                                <from>openjdk:17-alpine</from>
+                                <entryPoint>
+                                    <exec>
+                                        <args>java</args>
+                                        <args>-jar</args>
+                                        <args>/maven/${project.artifactId}-${project.version}.jar</args>
+                                    </exec>
+                                </entryPoint>
+                                <assembly>
+                                    <descriptorRef>artifact</descriptorRef>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>build</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

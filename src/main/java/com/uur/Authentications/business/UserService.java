@@ -7,6 +7,7 @@ import com.uur.Authentications.JpaRepositories.UserRoleRepository;
 import com.uur.Authentications.dtos.*;
 import com.uur.Authentications.entities.User;
 import com.uur.Authentications.exceptions.BadRequestException;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,12 +17,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.startsWith;
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.exact;
 
+@Slf4j
 @Service
 public class UserService implements IUserService {
     private final PasswordEncoder _passwordEncoder;
@@ -80,7 +81,7 @@ public class UserService implements IUserService {
         return resultUser;
     }
 
-    public Slice<User> getUsers(Pageable pageable,UserFilterDto userFilterDto) {
+    public Page<UserDto> getUsers(Pageable pageable,UserFilterDto userFilterDto) {
         User example = _modelMapper.map(userFilterDto, User.class);
         ExampleMatcher matcher = ExampleMatcher
                 .matchingAll()
@@ -91,9 +92,9 @@ public class UserService implements IUserService {
                 .withMatcher("lockoutEnabled", exact())
                 .withMatcher("phoneNumber", startsWith().ignoreCase());
 
-        Slice<User> res = _userRepository.findAll(Example.of(example, matcher), pageable);
-        return res;
-        // return users.stream().map(s -> _modelMapper.map(s, UserDto.class)).
+        Page<User> res = _userRepository.findAll(Example.of(example, matcher), pageable);
+
+        return new PageImpl<>(res.stream().map(s -> _modelMapper.map(s, UserDto.class)).toList(), pageable, res.getTotalElements());
     }
 
     @Override

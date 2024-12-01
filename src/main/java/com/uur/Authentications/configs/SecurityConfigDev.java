@@ -31,14 +31,14 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 
 @Configuration
 @EnableWebSecurity
-@Profile("test")
-public class SecurityConfigTest {
+@Profile("dev")
+public class SecurityConfigDev {
     private final JwtAuthenticationEntryPoint handler;
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final PasswordEncoder passwordEncoder;
 
-    public SecurityConfigTest(JwtAuthenticationEntryPoint handler, UserDetailsService userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter, PasswordEncoder passwordEncoder) {
+    public SecurityConfigDev(JwtAuthenticationEntryPoint handler, UserDetailsService userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter, PasswordEncoder passwordEncoder) {
         this.handler = handler;
         this.userDetailsService = userDetailsService;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;

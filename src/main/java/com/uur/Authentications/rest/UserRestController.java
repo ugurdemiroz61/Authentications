@@ -2,15 +2,15 @@ package com.uur.Authentications.rest;
 
 import com.uur.Authentications.business.IUserService;
 import com.uur.Authentications.dtos.*;
-import com.uur.Authentications.entities.User;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping("users")
 public class UserRestController {
@@ -21,36 +21,36 @@ public class UserRestController {
     }
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDto CreateUser(@RequestBody @Valid CreateUserDto createUserDto) {
-        return _userService.CreateUser(createUserDto);
+    public ResponseEntity<UserDto> CreateUser(@RequestBody @Valid CreateUserDto createUserDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(_userService.CreateUser(createUserDto));
     }
 
     @PutMapping()
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void UpdateUser(@RequestBody @Valid UpdateUserDto updateUserDto) {
+    public ResponseEntity<Void> UpdateUser(@RequestBody @Valid UpdateUserDto updateUserDto) {
         _userService.UpdateUser(updateUserDto);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("getCurrentUser")
-    public UserDto getCurrentUser() {
-        return _userService.getCurrentUser();
+    public ResponseEntity<UserDto> getCurrentUser() {
+        return ResponseEntity.status(HttpStatus.OK).body(_userService.getCurrentUser());
     }
 
     @PutMapping("ChangePassword")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void ChangePassword(@RequestBody @Valid ChangePasswordDto changePasswordDto) {
+    public ResponseEntity<Void> ChangePassword(@RequestBody @Valid ChangePasswordDto changePasswordDto) {
         _userService.ChangePassword(changePasswordDto);
+        log.debug("Password changed");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("ResetPassword")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void ResetPassword(@RequestBody @Valid ResetPasswordDto resetPasswordDto) {
+    public ResponseEntity<Void> ResetPassword(@RequestBody @Valid ResetPasswordDto resetPasswordDto) {
         _userService.ResetPassword(resetPasswordDto);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping()
-    public Slice<User> getUsers(Pageable pageable,@RequestBody UserFilterDto userFilterDto) {
-        return _userService.getUsers(pageable,userFilterDto);
+    public ResponseEntity<Page<UserDto>> getUsers(@RequestBody Pageable pageable, @RequestBody UserFilterDto userFilterDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(_userService.getUsers(pageable, userFilterDto));
     }
 }

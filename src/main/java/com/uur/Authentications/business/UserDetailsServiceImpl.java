@@ -8,6 +8,7 @@ import com.uur.Authentications.entities.UserAuthority;
 import com.uur.Authentications.entities.UserRole;
 import com.uur.Authentications.exceptions.NotFoundException;
 import com.uur.Authentications.security.JwtUserDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository _userRepository;

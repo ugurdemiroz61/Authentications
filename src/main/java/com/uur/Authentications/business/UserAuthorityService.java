@@ -6,11 +6,13 @@ import com.uur.Authentications.dtos.UserAuthorityDto;
 import com.uur.Authentications.entities.*;
 import com.uur.Authentications.exceptions.BadRequestException;
 import com.uur.Authentications.exceptions.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserAuthorityService implements IUserAuthorityService {
     private final UserAuthorityRepository _userAuthorityRepository;

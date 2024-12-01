@@ -1,0 +1,49 @@
+version: '1.0'
+
+networks:
+  uur:
+
+services:
+  postgres:
+    image: postgres
+    container_name: uur-postgres-server
+    restart: always
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    # or set shared memory limit when deploy via swarm stack
+    #volumes:
+    #  - type: tmpfs
+    #    target: /dev/shm
+    #    tmpfs:
+    #      size: 134217728 # 128*2^20 bytes = 128Mb
+    environment:
+      POSTGRES_PASSWORD: Authentication061.
+    networks:
+      - uur
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    networks:
+      - uur
+    ports:
+      - 8080:8080
+
+  uur-authentications:
+    image: uur/authentications:10.0.1
+    container_name: uur-authentications
+    networks:
+      - uur
+    restart: always
+    environment:
+      SERVER_PORT: 8081
+      DATABASE_URL: jdbc:postgresql://uur-postgres-server:5432/Authentications
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: Authentication061.
+      JWT_SECRET_KEY: AuthenticationsApp61Trabzonspor*
+      JWT_EXPIRATION: 86400000
+      JWT_REFRESH_TOKEN_EXPIRATION: 604800000
+    ports:
+      - '8081:8081'

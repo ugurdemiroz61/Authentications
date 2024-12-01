@@ -4,11 +4,14 @@ import com.uur.Authentications.business.IRoleService;
 import com.uur.Authentications.dtos.CreateRoleDto;
 import com.uur.Authentications.dtos.RoleDto;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("roles")
 public class RoleRestController {
@@ -19,20 +22,19 @@ public class RoleRestController {
     }
 
     @GetMapping()
-    public List<RoleDto> GetRole() {
-        return _roleService.findAll();
+    public ResponseEntity<List<RoleDto>> GetRole() {
+        return ResponseEntity.status(HttpStatus.OK).body(_roleService.findAll());
     }
 
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public RoleDto AddRole(@RequestBody @Valid CreateRoleDto roleDto) {
-        return _roleService.AddRole(roleDto);
+    public ResponseEntity<RoleDto> AddRole(@RequestBody @Valid CreateRoleDto roleDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(_roleService.AddRole(roleDto));
     }
 
     @DeleteMapping("{roleId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void RemoveRole(@PathVariable long roleId) {
+    public ResponseEntity<Void> RemoveRole(@PathVariable long roleId) {
         _roleService.RemoveRole(roleId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -1,0 +1,42 @@
+server:
+    port: ${SERVER_PORT:8081}
+    servlet:
+        context-path: /api
+spring:
+  application:
+    name: Authentications
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/Authentications}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:Authentication061.}
+  sql:
+    init:
+      mode: always
+  main:
+    lazy-initialization: true
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+  profiles:
+    active: dev
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY:AuthenticationsApp61Trabzonspor*}
+      expiration: ${JWT_EXPIRATION:86400000}
+      refresh-token:
+        expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:604800000}
+logging:
+  level:
+    root: INFO
+    com.uur.Authentications.rest: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  file:
+    name: logs/authentications.log
+    max-size: 10MB
+    total-size-cap: 100MB
+
