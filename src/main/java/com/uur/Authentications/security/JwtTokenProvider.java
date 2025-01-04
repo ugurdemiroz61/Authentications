@@ -49,12 +49,10 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    //BEAN YAPILACAK
     private SecretKey getSecretKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    //BEAN YAPILACAK
     private JwtParser getJwtParser() {
         return Jwts.parser().verifyWith(getSecretKey()).build();
     }

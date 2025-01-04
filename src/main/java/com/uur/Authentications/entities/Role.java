@@ -1,15 +1,25 @@
 package com.uur.Authentications.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
 @Table(schema = "Authentication")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Role extends BaseEntity {
     @Column(nullable = false)
     private String name;
+
+    public Role() {
+    }
+
+    public Role(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

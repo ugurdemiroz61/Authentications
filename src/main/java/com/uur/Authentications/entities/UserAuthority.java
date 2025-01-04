@@ -1,15 +1,7 @@
 package com.uur.Authentications.entities;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 @Entity
 @Table(schema = "Authentication")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class UserAuthority  extends BaseEntity  {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
@@ -18,4 +10,28 @@ public class UserAuthority  extends BaseEntity  {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private User user;
+
+    public UserAuthority() {
+    }
+
+    public UserAuthority(Authority authority, User user) {
+        this.authority = authority;
+        this.user = user;
+    }
+
+    public Authority getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(Authority authority) {
+        this.authority = authority;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

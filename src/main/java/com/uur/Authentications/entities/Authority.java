@@ -1,18 +1,26 @@
 package com.uur.Authentications.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(schema = "Authentication")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Authority extends BaseEntity {
+
     @Column(nullable = false)
     private String name;
+
+    public Authority() {
+    }
+
+    public Authority(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

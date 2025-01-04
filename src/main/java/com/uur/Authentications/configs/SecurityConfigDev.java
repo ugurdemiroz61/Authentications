@@ -57,7 +57,6 @@ public class SecurityConfigDev {
         CorsConfiguration config = new CorsConfiguration();
         //config.applyPermitDefaultValues();
 
-        config.setAllowCredentials(true);
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
 
@@ -106,7 +105,9 @@ public class SecurityConfigDev {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .cors(Customizer.withDefaults())
+                .cors((cors) -> cors
+                        .configurationSource(corsConfigurationSource())
+                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(handler))

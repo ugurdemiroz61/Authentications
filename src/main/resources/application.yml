@@ -10,6 +10,12 @@ spring:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/Authentications}
     username: ${DATABASE_USERNAME:postgres}
     password: ${DATABASE_PASSWORD:Authentication061.}
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 10
+      idle-timeout: 60000
+      connection-timeout: 30000
+      pool-name: Authentications
   sql:
     init:
       mode: always
