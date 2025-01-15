@@ -1,6 +1,5 @@
 package com.uur.Authentications.business;
 
-
 import com.uur.Authentications.JpaRepositories.UserAuthorityRepository;
 import com.uur.Authentications.JpaRepositories.UserRepository;
 import com.uur.Authentications.JpaRepositories.UserRoleRepository;
@@ -95,6 +94,37 @@ public class UserService implements IUserService {
         Page<User> res = _userRepository.findAll(Example.of(example, matcher), pageable);
 
         return new PageImpl<>(res.stream().map(s -> _modelMapper.map(s, UserDto.class)).toList(), pageable, res.getTotalElements());
+    }
+
+    @Override
+    public void badCredentials(String userName) {
+        Optional<User> optUser = _userRepository.findByUserName(userName);
+        optUser.ifPresent(user -> {
+                    user.setAccessFailedCount(user.getAccessFailedCount() + 1);
+                    if (user.getAccessFailedCount() >= 5) {
+                        user.setLockoutEnabled(true);
+                    }
+                    _userRepository.save(user);
+                });
+    }
+
+    @Override
+    public void successCredentials(String userName) {
+        Optional<User> optUser = _userRepository.findByUserName(userName);
+        optUser.ifPresent(user -> {
+            user.setAccessFailedCount(0);
+            _userRepository.save(user);
+        });
+    }
+
+    @Override
+    public Optional<User> findByUserName(String userName) {
+        return _userRepository.findByUserName(userName);
+    }
+
+    @Override
+    public Optional<User> findById(long userId) {
+        return _userRepository.findById(userId);
     }
 
     @Override

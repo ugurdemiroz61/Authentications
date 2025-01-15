@@ -4,8 +4,8 @@ import com.uur.Authentications.JpaRepositories.UserAuthorityRepository;
 import com.uur.Authentications.JpaRepositories.UserRepository;
 import com.uur.Authentications.JpaRepositories.UserRoleRepository;
 import com.uur.Authentications.entities.*;
-import com.uur.Authentications.exceptions.NotFoundException;
 import com.uur.Authentications.security.JwtUserDetails;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -85,7 +85,7 @@ public class UserDetailsServiceImplTest {
         when(userRepository.findByUserName(username)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(NotFoundException.class, () -> userDetailsServiceImpl.loadUserByUsername(username));
+        assertThrows(EntityNotFoundException.class, () -> userDetailsServiceImpl.loadUserByUsername(username));
         verify(userRepository, times(1)).findByUserName(username);
         verify(userRoleRepository, never()).findByUser(any(User.class));
         verify(userAuthorityRepository, never()).findByUser(any(User.class));
@@ -139,7 +139,7 @@ public class UserDetailsServiceImplTest {
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(NotFoundException.class, () -> userDetailsServiceImpl.loadUserById(userId));
+        assertThrows(EntityNotFoundException.class, () -> userDetailsServiceImpl.loadUserById(userId));
         verify(userRepository, times(1)).findById(userId);
         verify(userRoleRepository, never()).findByUser(any(User.class));
         verify(userAuthorityRepository, never()).findByUser(any(User.class));

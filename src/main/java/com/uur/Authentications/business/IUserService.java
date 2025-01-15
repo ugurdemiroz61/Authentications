@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IUserService {
     UserDto CreateUser(CreateUserDto createUserDto);
@@ -20,4 +21,12 @@ public interface IUserService {
     void ResetPassword(ResetPasswordDto resetPasswordDto);
 
     Page<UserDto> getUsers(Pageable pageable, UserFilterDto userFilterDto);
+
+    void badCredentials(String userName);
+
+    void successCredentials(String userName);
+
+    Optional<User> findByUserName(String userName);
+
+    Optional<User> findById(long userId);
 }

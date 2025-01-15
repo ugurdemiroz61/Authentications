@@ -6,7 +6,7 @@ import com.uur.Authentications.dtos.AuthorityDto;
 import com.uur.Authentications.dtos.CreateAuthorityDto;
 import com.uur.Authentications.entities.Authority;
 import com.uur.Authentications.exceptions.BadRequestException;
-import com.uur.Authentications.exceptions.NotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -21,15 +21,16 @@ import static org.junit.Assert.*;
 public class AuthorityServiceTest {
 
     private AuthorityService authorityService;
+
     private AuthorityRepository _authorityRepository;
     private UserAuthorityRepository _userAuthorityRepository;
-    private ModelMapper _modelMapper;
+
 
     @Before
     public void setUp() throws Exception {
         _authorityRepository = mock(AuthorityRepository.class);
         _userAuthorityRepository = mock(UserAuthorityRepository.class);
-        _modelMapper = new ModelMapper();
+        ModelMapper _modelMapper = new ModelMapper();
         authorityService = new AuthorityService(_authorityRepository, _userAuthorityRepository, _modelMapper);
     }
 
@@ -75,7 +76,7 @@ public class AuthorityServiceTest {
         verify(_authorityRepository).deleteById(anyLong());
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test(expected = EntityNotFoundException.class)
     public void whenRemoveAuthorityCalledWithUnregisteredId_itShouldReturnException() {
         //Given
         when(_userAuthorityRepository.existsById(eq(0L))).thenReturn(false);

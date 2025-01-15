@@ -6,7 +6,7 @@ import com.uur.Authentications.dtos.CreateRoleDto;
 import com.uur.Authentications.dtos.RoleDto;
 import com.uur.Authentications.entities.Role;
 import com.uur.Authentications.exceptions.BadRequestException;
-import com.uur.Authentications.exceptions.NotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -21,10 +21,10 @@ public class RoleService implements IRoleService {
     private final UserRoleRepository _userRoleRepository;
     private final ModelMapper _modelMapper;
 
-    public RoleService(RoleRepository roleRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper) {
-        _roleRepository = roleRepository;
-        _userRoleRepository = userRoleRepository;
-        _modelMapper = modelMapper;
+    public RoleService(RoleRepository _roleRepository, UserRoleRepository _userRoleRepository, ModelMapper _modelMapper) {
+        this._roleRepository = _roleRepository;
+        this._userRoleRepository = _userRoleRepository;
+        this._modelMapper = _modelMapper;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class RoleService implements IRoleService {
             if (_roleRepository.existsById(roleId)) {
                 _roleRepository.deleteById(roleId);
             } else {
-                throw new NotFoundException("roleId:" + roleId + " bulunamadı");
+                throw new EntityNotFoundException("roleId:" + roleId + " bulunamadı");
             }
         } else {
             throw new BadRequestException("Silmek istediğiniz rol diğer kullanıcılara tanımlıdır silinemez!");
@@ -62,4 +62,5 @@ public class RoleService implements IRoleService {
                 .map(user -> _modelMapper.map(user, RoleDto.class))
                 .toList();
     }
+
 }

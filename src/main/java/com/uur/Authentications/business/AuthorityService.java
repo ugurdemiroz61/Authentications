@@ -6,7 +6,7 @@ import com.uur.Authentications.dtos.AuthorityDto;
 import com.uur.Authentications.dtos.CreateAuthorityDto;
 import com.uur.Authentications.entities.Authority;
 import com.uur.Authentications.exceptions.BadRequestException;
-import com.uur.Authentications.exceptions.NotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -21,10 +21,11 @@ public class AuthorityService implements IAuthorityService {
     private final UserAuthorityRepository _userAuthorityRepository;
     private final ModelMapper _modelMapper;
 
-    public AuthorityService(AuthorityRepository authorityRepository, UserAuthorityRepository userAuthorityRepository, ModelMapper modelMapper) {
-        _authorityRepository = authorityRepository;
-        _userAuthorityRepository = userAuthorityRepository;
-        _modelMapper = modelMapper;
+
+    public AuthorityService(AuthorityRepository _authorityRepository, UserAuthorityRepository _userAuthorityRepository, ModelMapper _modelMapper) {
+        this._authorityRepository = _authorityRepository;
+        this._userAuthorityRepository = _userAuthorityRepository;
+        this._modelMapper = _modelMapper;
     }
 
     @Override
@@ -56,10 +57,11 @@ public class AuthorityService implements IAuthorityService {
             if (_authorityRepository.existsById(authorityId)) {
                 _authorityRepository.deleteById(authorityId);
             } else {
-                throw new NotFoundException("Authority Id:" + authorityId + " bulunamadı!");
+                throw new EntityNotFoundException("Authority Id:" + authorityId + " bulunamadı!");
             }
         } else {
             throw new BadRequestException("Silmek istediğiniz Authority diğer kullanıcılara tanımlıdır silinemez!");
         }
     }
+
 }

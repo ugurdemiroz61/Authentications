@@ -4,7 +4,7 @@ import com.uur.Authentications.JpaRepositories.RefreshTokenRepository;
 import com.uur.Authentications.dtos.RefreshTokenDto;
 import com.uur.Authentications.entities.RefreshToken;
 import com.uur.Authentications.entities.User;
-import com.uur.Authentications.exceptions.NotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -115,7 +115,7 @@ public class TokenServiceTest {
         when(refreshTokenRepository.findByUser_Id(userId)).thenReturn(Optional.empty());
 
         // Act & Assert
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             tokenService.getByUser(userId);
         });
 
@@ -155,7 +155,7 @@ public class TokenServiceTest {
         when(refreshTokenRepository.findByUserIdAndToken(userId, token)).thenReturn(Optional.empty());
 
         // Act & Assert
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             tokenService.RevokeRefreshToken(refreshTokenDto);
         });
 

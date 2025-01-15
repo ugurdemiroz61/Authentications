@@ -4,6 +4,7 @@ import com.uur.Authentications.business.IAuthService;
 import com.uur.Authentications.dtos.LoginDto;
 import com.uur.Authentications.dtos.RefreshTokenDto;
 import com.uur.Authentications.dtos.TokenDto;
+import com.uur.Authentications.exceptions.UnAuthorizeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +21,12 @@ public class AuthRestController {
     }
 
     @PostMapping("CreateToken")
-    public ResponseEntity<TokenDto> CreateToken(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<TokenDto> CreateToken(@RequestBody LoginDto loginDto) throws UnAuthorizeException {
         return ResponseEntity.status(HttpStatus.CREATED).body(_authService.CreateToken(loginDto));
     }
 
     @PostMapping("CreateTokenByRefreshToken")
-    public ResponseEntity<TokenDto> CreateTokenByRefreshToken(@RequestBody RefreshTokenDto refreshTokenDto) {
+    public ResponseEntity<TokenDto> CreateTokenByRefreshToken(@RequestBody RefreshTokenDto refreshTokenDto) throws UnAuthorizeException {
         return ResponseEntity.status(HttpStatus.CREATED).body(_authService.CreateTokenByRefreshToken(refreshTokenDto));
     }
 

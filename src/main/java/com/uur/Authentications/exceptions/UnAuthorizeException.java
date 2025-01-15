@@ -1,6 +1,8 @@
 package com.uur.Authentications.exceptions;
 
-public class UnAuthorizeException extends RuntimeException {
+import javax.naming.AuthenticationException;
+
+public class UnAuthorizeException extends AuthenticationException {
     public UnAuthorizeException(String message) {
         super(message);
     }

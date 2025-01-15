@@ -3,8 +3,7 @@ package com.uur.Authentications.advice;
 import com.uur.Authentications.dtos.ErrorDto;
 import com.uur.Authentications.exceptions.BadRequestException;
 import com.uur.Authentications.exceptions.ForbiddenException;
-import com.uur.Authentications.exceptions.NotFoundException;
-import com.uur.Authentications.exceptions.UnAuthorizeException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -18,6 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +38,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<ErrorDto>(errorDetails, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler(EntityNotFoundException.class)
     public final ResponseEntity<ErrorDto> handleNotFoundException(Exception ex, WebRequest request) throws Exception {
         ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),
                 ex.getMessage(), request.getDescription(false));
@@ -64,12 +64,6 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),
                 ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<ErrorDto>(errorDetails, HttpStatus.FORBIDDEN);
-    }
-    @ExceptionHandler(UnAuthorizeException.class)
-    public final ResponseEntity<ErrorDto> handleUnAuthorizeException(Exception ex, WebRequest request) throws Exception {
-        ErrorDto errorDetails = new ErrorDto(LocalDateTime.now(),
-                ex.getMessage(), request.getDescription(false));
-        return new ResponseEntity<ErrorDto>(errorDetails, HttpStatus.UNAUTHORIZED);
     }
 
 

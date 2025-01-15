@@ -6,7 +6,7 @@ import com.uur.Authentications.JpaRepositories.UserRepository;
 import com.uur.Authentications.dtos.CreateUserAuthorityDto;
 import com.uur.Authentications.dtos.UserAuthorityDto;
 import com.uur.Authentications.entities.*;
-import com.uur.Authentications.exceptions.NotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,6 +21,7 @@ import static org.mockito.Mockito.mock;
 public class UserAuthorityServiceTest {
 
     private UserAuthorityService userAuthorityService;
+
     private UserAuthorityRepository _userAuthorityRepository;
     private AuthorityRepository _authorityRepository;
     private UserRepository _userRepository;
@@ -60,7 +61,7 @@ public class UserAuthorityServiceTest {
         assertNotNull(authorityDto);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test(expected = EntityNotFoundException.class)
     public void whenAddUserAuthorityCalledWidthNotRegisterUser_itShouldReturnException() {
         //Given
         CreateUserAuthorityDto validCreateUserAuthorityDto = new CreateUserAuthorityDto();
@@ -79,7 +80,7 @@ public class UserAuthorityServiceTest {
         verify(_userRepository).findById(any());
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test(expected = EntityNotFoundException.class)
     public void whenAddUserAuthorityCalledWidthNotRegisterAuthority_itShouldReturnException() {
         //Given
         CreateUserAuthorityDto validCreateUserAuthorityDto = new CreateUserAuthorityDto();
@@ -128,7 +129,7 @@ public class UserAuthorityServiceTest {
         assertEquals(2, authorityDtos.size());
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test(expected = EntityNotFoundException.class)
     public void whenGetUserAuthoritiesCalledWidthNotRegistered_itShouldReturnException() {
         when(_userRepository.findById(any())).thenReturn(Optional.empty());
         userAuthorityService.getUserAuthorities(1L);

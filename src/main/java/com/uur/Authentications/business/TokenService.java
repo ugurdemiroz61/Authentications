@@ -4,7 +4,7 @@ import com.uur.Authentications.JpaRepositories.RefreshTokenRepository;
 import com.uur.Authentications.dtos.RefreshTokenDto;
 import com.uur.Authentications.entities.RefreshToken;
 import com.uur.Authentications.entities.User;
-import com.uur.Authentications.exceptions.NotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Slf4j
 @Service
-public class TokenService {
+public class TokenService implements ITokenService {
 
     private final RefreshTokenRepository _refreshTokenRepository;
 
@@ -39,11 +39,11 @@ public class TokenService {
     }
 
     public RefreshToken getByUser(long userId) {
-        return _refreshTokenRepository.findByUser_Id(userId).orElseThrow(() -> new NotFoundException("Kullanıcı bulunamadı!"));
+        return _refreshTokenRepository.findByUser_Id(userId).orElseThrow(() -> new EntityNotFoundException("Kullanıcı bulunamadı!"));
     }
 
     public void RevokeRefreshToken(RefreshTokenDto refreshTokenDto) {
-        RefreshToken tokenEntity = _refreshTokenRepository.findByUserIdAndToken(refreshTokenDto.getUserId(), refreshTokenDto.getToken()).orElseThrow(() -> new NotFoundException("Refresh Token not found!"));
+        RefreshToken tokenEntity = _refreshTokenRepository.findByUserIdAndToken(refreshTokenDto.getUserId(), refreshTokenDto.getToken()).orElseThrow(() -> new EntityNotFoundException("Refresh Token not found!"));
         _refreshTokenRepository.delete(tokenEntity);
     }
 

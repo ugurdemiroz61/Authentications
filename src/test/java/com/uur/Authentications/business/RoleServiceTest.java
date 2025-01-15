@@ -6,7 +6,7 @@ import com.uur.Authentications.dtos.CreateRoleDto;
 import com.uur.Authentications.dtos.RoleDto;
 import com.uur.Authentications.entities.Role;
 import com.uur.Authentications.exceptions.BadRequestException;
-import com.uur.Authentications.exceptions.NotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.modelmapper.ModelMapper;
@@ -27,8 +27,6 @@ public class RoleServiceTest {
 
     private UserRoleRepository _userRoleRepository;
 
-    private ModelMapper _modelMapper;
-
     @Before
     public void setUp() throws Exception {
 
@@ -36,7 +34,7 @@ public class RoleServiceTest {
 
         _userRoleRepository = mock(UserRoleRepository.class);
 
-        _modelMapper = new ModelMapper();
+        ModelMapper _modelMapper = new ModelMapper();
 
         roleService = new RoleService(_roleRepository, _userRoleRepository, _modelMapper);
 
@@ -85,7 +83,7 @@ public class RoleServiceTest {
         verify(_roleRepository).deleteById(anyLong());
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test(expected = EntityNotFoundException.class)
     public void whenRemoveRoleCalledWithUnregisteredId_itShouldReturnException() {
         //Given
         when(_userRoleRepository.existsById(eq(0L))).thenReturn(false);

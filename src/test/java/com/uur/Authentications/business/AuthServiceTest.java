@@ -1,13 +1,12 @@
 package com.uur.Authentications.business;
-import com.uur.Authentications.JpaRepositories.UserRepository;
 import com.uur.Authentications.dtos.LoginDto;
 import com.uur.Authentications.dtos.RefreshTokenDto;
 import com.uur.Authentications.dtos.TokenDto;
 import com.uur.Authentications.entities.RefreshToken;
 import com.uur.Authentications.entities.User;
-import com.uur.Authentications.exceptions.NotFoundException;
 import com.uur.Authentications.exceptions.UnAuthorizeException;
 import com.uur.Authentications.security.JwtTokenProvider;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,7 +15,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
@@ -24,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class AuthServiceTest {
+
 
     @Mock
     private AuthenticationManager authenticationManager;
@@ -35,7 +34,7 @@ public class AuthServiceTest {
     private TokenService refreshTokenService;
 
     @Mock
-    private UserRepository userRepository;
+    private UserService userService;
 
     @InjectMocks
     private AuthService authService;
@@ -46,7 +45,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void testCreateToken_Success() {
+    public void testCreateToken_Success() throws UnAuthorizeException {
         // Arrange
         LoginDto loginDto = new LoginDto();
         loginDto.setUserName("testUser");
@@ -58,7 +57,7 @@ public class AuthServiceTest {
 
         Authentication auth = mock(Authentication.class);
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(auth);
-        when(userRepository.findByUserName(loginDto.getUserName())).thenReturn(Optional.of(user));
+        when(userService.findByUserName(loginDto.getUserName())).thenReturn(Optional.of(user));
         when(jwtTokenProvider.generateJwtToken(user)).thenReturn("jwtToken");
         when(jwtTokenProvider.generateJwtRefreshToken(user)).thenReturn("refreshToken");
 
@@ -71,7 +70,7 @@ public class AuthServiceTest {
         assertEquals(1L, tokenDto.getUserId());
 
         verify(authenticationManager, times(1)).authenticate(any(UsernamePasswordAuthenticationToken.class));
-        verify(userRepository, times(1)).findByUserName(loginDto.getUserName());
+        verify(userService, times(1)).findByUserName(loginDto.getUserName());
         verify(jwtTokenProvider, times(1)).generateJwtToken(user);
         verify(jwtTokenProvider, times(1)).generateJwtRefreshToken(user);
         verify(refreshTokenService, times(1)).createRefreshToken(user, "refreshToken");
@@ -84,22 +83,22 @@ public class AuthServiceTest {
         loginDto.setUserName("unknownUser");
         loginDto.setPassword("password");
 
-        when(userRepository.findByUserName(loginDto.getUserName())).thenReturn(Optional.empty());
+        when(userService.findByUserName(loginDto.getUserName())).thenReturn(Optional.empty());
 
         // Act & Assert
-        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             authService.CreateToken(loginDto);
         });
 
         assertEquals("Kullanıcı bulunamadı!", exception.getMessage());
 
         verify(authenticationManager, times(1)).authenticate(any(UsernamePasswordAuthenticationToken.class));
-        verify(userRepository, times(1)).findByUserName(loginDto.getUserName());
+        verify(userService, times(1)).findByUserName(loginDto.getUserName());
         verify(jwtTokenProvider, times(0)).generateJwtToken(any(User.class));
     }
 
     @Test
-    public void testCreateTokenByRefreshToken_Success() {
+    public void testCreateTokenByRefreshToken_Success() throws UnAuthorizeException {
         // Arrange
         RefreshTokenDto refreshTokenDto = new RefreshTokenDto();
         refreshTokenDto.setToken("refreshToken");

@@ -5,7 +5,7 @@ import com.uur.Authentications.dtos.CreateUserAuthorityDto;
 import com.uur.Authentications.dtos.UserAuthorityDto;
 import com.uur.Authentications.entities.*;
 import com.uur.Authentications.exceptions.BadRequestException;
-import com.uur.Authentications.exceptions.NotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +16,18 @@ import java.util.Optional;
 @Service
 public class UserAuthorityService implements IUserAuthorityService {
     private final UserAuthorityRepository _userAuthorityRepository;
-    private final AuthorityRepository _authorityRepository;
+    private final AuthorityRepository  _authorityRepository;
     private final UserRepository _userRepository;
 
-    public UserAuthorityService(UserAuthorityRepository userAuthorityRepository, AuthorityRepository authorityRepository, UserRepository userRepository) {
-        _userAuthorityRepository = userAuthorityRepository;
-        _authorityRepository = authorityRepository;
-        _userRepository = userRepository;
+    public UserAuthorityService(UserAuthorityRepository _userAuthorityRepository, AuthorityRepository _authorityRepository, UserRepository _userRepository) {
+        this._userAuthorityRepository = _userAuthorityRepository;
+        this._authorityRepository = _authorityRepository;
+        this._userRepository = _userRepository;
     }
 
     @Override
     public List<UserAuthorityDto> getUserAuthorities(long userId) {
-        User user = _userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Kullanıcı bulunamadı!"));
+        User user = _userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("Kullanıcı bulunamadı!"));
         return _userAuthorityRepository.findByUser(user).stream()
                 .map(userAuthority ->
                         new UserAuthorityDto(userAuthority.getId(), userAuthority.getAuthority().getId(), userAuthority.getAuthority().getName(), userAuthority.getUser().getId())
@@ -37,8 +37,8 @@ public class UserAuthorityService implements IUserAuthorityService {
 
     @Override
     public UserAuthorityDto AddUserAuthority(CreateUserAuthorityDto createUserAuthorityDto) {
-        User addingUser = _userRepository.findById(createUserAuthorityDto.getUserId()).orElseThrow(() -> new NotFoundException("Kullanıcı bulunamadı!"));
-        Authority addingAuthority = _authorityRepository.findById(createUserAuthorityDto.getAuthorityId()).orElseThrow(() -> new NotFoundException("Authority bulunamadı!"));
+        User addingUser = _userRepository.findById(createUserAuthorityDto.getUserId()).orElseThrow(() -> new EntityNotFoundException("Kullanıcı bulunamadı!"));
+        Authority addingAuthority = _authorityRepository.findById(createUserAuthorityDto.getAuthorityId()).orElseThrow(() -> new EntityNotFoundException("Authority bulunamadı!"));
         if (_userAuthorityRepository.existsByUserAndAuthority(addingUser, addingAuthority)) {
             throw new BadRequestException("Authority zaten mevcut tekrar eklenemez!");
         } else {

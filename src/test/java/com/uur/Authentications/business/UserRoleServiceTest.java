@@ -8,7 +8,7 @@ import com.uur.Authentications.dtos.UserRoleDto;
 import com.uur.Authentications.entities.Role;
 import com.uur.Authentications.entities.User;
 import com.uur.Authentications.entities.UserRole;
-import com.uur.Authentications.exceptions.NotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -62,7 +62,7 @@ public class UserRoleServiceTest {
         assertNotNull(roleDto);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test(expected = EntityNotFoundException.class)
     public void whenAddUserRoleCalledWidthNotRegisterUser_itShouldReturnException() {
         //Given
         CreateUserRoleDto validCreateUserRoleDto = new CreateUserRoleDto();
@@ -81,7 +81,7 @@ public class UserRoleServiceTest {
         verify(_userRepository).findById(any());
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test(expected = EntityNotFoundException.class)
     public void whenAddUserRoleCalledWidthNotRegisterRole_itShouldReturnException() {
         //Given
         CreateUserRoleDto validCreateUserRoleDto = new CreateUserRoleDto();
@@ -130,7 +130,7 @@ public class UserRoleServiceTest {
         assertEquals(2, roleDtos.size());
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test(expected = EntityNotFoundException.class)
     public void whenUserRolesCalledWidthNotRegistered_itShouldReturnException() {
         when(_userRepository.findById(any())).thenReturn(Optional.empty());
         userRoleService.GetUserRoles(1L);
